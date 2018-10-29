@@ -51,7 +51,11 @@ namespace Movie_Rating_Compulsory
 
         public List<int> RevieverMovies(int rID)
         {
-            throw new NotImplementedException();
+            List<int> reviewerMovies = Reviews.Where(m => m.Reviewer == rID)
+                .OrderByDescending(m => m.Grade).ThenByDescending(m => m.Date)
+                .Select(m => m.Movie).ToList();
+
+            return reviewerMovies;
         }
 
         public List<int> ReviewerTopCount()
