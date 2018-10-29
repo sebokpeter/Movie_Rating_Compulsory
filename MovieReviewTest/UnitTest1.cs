@@ -28,6 +28,10 @@ namespace MovieReviewTest
             IMovieRating mr = new MovieRating();
             List<Review> list = ReadJSONTop10("../../../../ratings.json");
 
+            //int movieIdInput = ;
+            double  res = mr.MovieReviewAvg(1488844);
+            var exp = 3;
+            Assert.Equal(res, exp);
 
         }
 

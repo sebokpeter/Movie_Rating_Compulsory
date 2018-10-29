@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Movie_Rating_Compulsory
 {
@@ -24,7 +25,20 @@ namespace Movie_Rating_Compulsory
 
         public double MovieReviewAvg(int mID)
         {
-            throw new NotImplementedException();
+            int sumOfGrades = 0;
+            int numOfReviewer = 0;
+
+            var movieID = Reviews.FirstOrDefault(review => mID == review.Movie);
+            
+            for(int i = 0; i <Reviews.Count(); i++)
+            {
+               sumOfGrades += movieID.Grade;
+               numOfReviewer++;
+            }
+
+            double avarageRate = sumOfGrades / numOfReviewer;
+            return avarageRate;
+               
         }
 
         public int MovieReviewByGrade(int mID, int grade)
