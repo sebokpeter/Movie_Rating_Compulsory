@@ -84,7 +84,34 @@ namespace MovieReviewTest
             mr.Reviews = ReadJSON(PATH);
             Random rnd = new Random();
             Stopwatch sw = Stopwatch.StartNew();
-            double res = mr.GradeCountByID(rnd.Next(1, 999), rnd.Next(1, 5));
+            int res = mr.GradeCountByID(rnd.Next(1, 999), rnd.Next(1, 5));
+            sw.Stop();
+
+            Assert.True(sw.ElapsedMilliseconds < 4000);
+        }
+        #endregion
+
+        #region MovieReviewerCountTest
+
+        [Fact]
+        public void MovieReviewerCountTest()
+        {
+            IMovieRating mr = new MovieRating();
+            mr.Reviews = ReadJSONTop10(PATH);
+            int res = mr.MovieReviewerCount(1488844);
+            int exp = 1;
+
+            Assert.Equal(res, exp);
+        }
+
+        [Fact]
+        public void MovieReviewerCountPerformanceTest()
+        {
+            IMovieRating mr = new MovieRating();
+            mr.Reviews = ReadJSON(PATH);
+            Random rnd = new Random();
+            Stopwatch sw = Stopwatch.StartNew();
+            int res = mr.MovieReviewerCount(1488844);
             sw.Stop();
 
             Assert.True(sw.ElapsedMilliseconds < 4000);

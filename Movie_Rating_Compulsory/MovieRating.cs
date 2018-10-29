@@ -35,9 +35,10 @@ namespace Movie_Rating_Compulsory
             throw new NotImplementedException();
         }
 
-        public int MovieReviewCount(int mID)
+        public int MovieReviewerCount(int mID)
         {
-            throw new NotImplementedException();
+            int count = Reviews.Where(x => x.Movie == mID).Count();
+            return count;
         }
 
         public List<int> MovieReviewers(int mID)
