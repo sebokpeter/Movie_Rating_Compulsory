@@ -5,6 +5,8 @@ namespace Movie_Rating_Compulsory
 {
     public class MovieRating : IMovieRating
     {
+        public List<Review> Reviews { get; set; }
+
         public double AvgOfReviewer(int rID)
         {
             throw new NotImplementedException();
