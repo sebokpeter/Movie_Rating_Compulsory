@@ -4,17 +4,21 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.IO;
 using Xunit;
+using System.Linq;
+using System.Diagnostics;
 
 namespace MovieReviewTest
 {
     public class UnitTest1
     {
 
+        private const string PATH = "../../../../ratings.json";
+
         [Fact]
         public void NumberOfReviews()
         {
             IMovieRating mr = new MovieRating();
-            List<Review> list = ReadJSONTop10("../../../../ratings.json");
+            List<Review> list = ReadJSONTop10(PATH);
 
             mr.Reviews = list;
             int res = mr.NumberOfReviews(1);
@@ -58,7 +62,49 @@ namespace MovieReviewTest
         public void TopMovieTest()
         {
             IMovieRating rating = new MovieRating();
-            List<Review> reviews = ReadJSONTop10("..\ratings.json");
+            List<Review> reviews = ReadJSONTop10(PATH);
+
+            rating.Reviews = reviews;
+
+            rating.TopMovies(10);
+            
+        }
+
+        #endregion
+
+        #region ReviewerMovies
+
+        [Fact]
+        public void ReviewerMoviesTest()
+        {
+            IMovieRating rating = new MovieRating();
+            List<Review> reviews = ReadJSONTop10(PATH);
+
+            // The first ten movies are all reviewed by reviewer #1.
+            List<int> expected = reviews.OrderByDescending(m => m.Grade).ThenByDescending(m => m.Date).Select(m => m.Movie).ToList();
+ 
+            rating.Reviews = reviews;
+
+            Assert.Equal(expected, rating.RevieverMovies(1));
+        }
+
+        [Fact]
+        public void ReviewerMoviePerfTest()
+        {
+            IMovieRating rating = new MovieRating();
+
+            List<Review> reviews = ReadJSON(PATH);
+            rating.Reviews = reviews;
+
+            Stopwatch sw;
+
+            for (int i = 0; i < 100; i++)
+            {
+                sw = Stopwatch.StartNew();
+                rating.RevieverMovies(i);
+                sw.Stop();
+                Assert.True(sw.ElapsedMilliseconds <= 4000);
+            }
         }
 
         #endregion
