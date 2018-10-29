@@ -16,7 +16,8 @@ namespace Movie_Rating_Compulsory
 
         public int GradeCountByID(int rID, int grade)
         {
-            throw new NotImplementedException();
+            int count = Reviews.Where(x => x.Reviewer == rID && x.Grade == grade).Count();
+            return count;
         }
 
         public List<int> MovieMostTopRate()

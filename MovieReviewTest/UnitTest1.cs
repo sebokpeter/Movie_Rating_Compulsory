@@ -64,6 +64,33 @@ namespace MovieReviewTest
         }
         #endregion
 
+        #region GradeCountByIDTest
+
+        [Fact]
+        public void GradeCountByIDTest()
+        {
+            IMovieRating mr = new MovieRating();
+            mr.Reviews = ReadJSONTop10(PATH);
+            int res = mr.GradeCountByID(1, 4);
+            int exp = 4;
+
+            Assert.Equal(res, exp);
+        }
+
+        [Fact]
+        public void GradeCountByIDPerformanceTest()
+        {
+            IMovieRating mr = new MovieRating();
+            mr.Reviews = ReadJSON(PATH);
+            Random rnd = new Random();
+            Stopwatch sw = Stopwatch.StartNew();
+            double res = mr.GradeCountByID(rnd.Next(1, 999), rnd.Next(1, 5));
+            sw.Stop();
+
+            Assert.True(sw.ElapsedMilliseconds < 4000);
+        }
+        #endregion
+
         #region TopMoveTests
 
         [Fact]
