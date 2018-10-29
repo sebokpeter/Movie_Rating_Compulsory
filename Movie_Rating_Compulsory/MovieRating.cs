@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Movie_Rating_Compulsory
@@ -18,9 +19,14 @@ namespace Movie_Rating_Compulsory
             throw new NotImplementedException();
         }
 
-        public List<int> MovieMostTopRate()
+        public List<Review> MovieMostTopRate()
         {
-            throw new NotImplementedException();
+            var topRatedMovies = Reviews.OrderBy(r => r.Grade ==5 ).ToList();
+            foreach (var movie in topRatedMovies)
+            {
+                Debug.WriteLine(movie.Movie);
+            }
+            return topRatedMovies;
         }
 
         public double MovieReviewAvg(int mID)

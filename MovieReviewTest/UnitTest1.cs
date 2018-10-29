@@ -98,9 +98,22 @@ namespace MovieReviewTest
 
         }
 
+        
 
+        [Fact]
+        public void MovieMostTopRated()
+        {
+            IMovieRating mr = new MovieRating();
+            List<Review> list = ReadJSONTop10("../../../../ratings.json");
 
+            mr.Reviews = list;
 
+            var res = mr.MovieMostTopRate().Count;
+            var exp = 1;
+
+            Assert.Equal(res, exp);
+
+        }
 
         List<Review> ReadJSONTop10(string path)
         {
