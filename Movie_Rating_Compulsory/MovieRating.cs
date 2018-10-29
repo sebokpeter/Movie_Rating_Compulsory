@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Movie_Rating_Compulsory
 {
@@ -59,7 +60,8 @@ namespace Movie_Rating_Compulsory
 
         public List<int> TopMovies(int num)
         {
-            throw new NotImplementedException();
+            List<int> topMovies = Reviews.OrderBy(m => m.Grade).Take(num).Select(m => m.Movie).ToList();
+            return topMovies;
         }
     }
 }

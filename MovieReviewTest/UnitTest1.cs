@@ -9,7 +9,6 @@ namespace MovieReviewTest
 {
     public class UnitTest1
     {
-
         List<Review> ReadJSON(string path)
         {
             List<Review> reviews = new List<Review>();
@@ -20,8 +19,7 @@ namespace MovieReviewTest
                 string json = sr.ReadToEnd();
                 reviews = JsonConvert.DeserializeObject<List<Review>>(json);
             }
-
-
+            
             return reviews;
         }
         
