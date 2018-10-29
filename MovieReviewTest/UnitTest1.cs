@@ -9,16 +9,27 @@ namespace MovieReviewTest
 {
     public class UnitTest1
     {
-        [Fact]
-        public void NumberOfReviews()
-        {
-            IMovieRating mr = new MovieRating();
-            List<Review> list = ReadJSON("rating.json");
+        //[Fact]
+        //public void NumberOfReviews()
+        //{
+        //    IMovieRating mr = new MovieRating();
+        //    List<Review> list = ReadJSON("rating.json");
 
-            mr.Reviews = list;
-            int res = mr.NumberOfReviews(1);
-            int exp = 10;
-            Assert.Equal(res, exp);
+        //    mr.Reviews = list;
+        //    int res = mr.NumberOfReviews(1);
+        //    int exp = 10;
+        //    Assert.Equal(res, exp);
+        //}
+
+
+        [Fact]
+        public void AvarageRating()
+        {
+            IMovieRating movieRating = new MovieRating();
+            List<Review> revList = ReadJSON("/rating.json");
+
+
+
         }
 
         List<Review> ReadJSONTop10(string path)
