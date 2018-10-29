@@ -10,7 +10,8 @@ namespace Movie_Rating_Compulsory
 
         public double AvgOfReviewer(int rID)
         {
-            throw new NotImplementedException();
+            double avg = Reviews.Where(x => x.Reviewer == rID).Average(x => x.Grade);
+            return avg;
         }
 
         public int GradeCountByID(int rID, int grade)

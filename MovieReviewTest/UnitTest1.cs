@@ -38,6 +38,32 @@ namespace MovieReviewTest
         }
         #endregion
 
+        #region AvgOfReviewerTest
+
+        [Fact]
+        public void AvgOfReviewerTest()
+        {
+            IMovieRating mr = new MovieRating();
+            mr.Reviews = ReadJSONTop10(PATH);
+            double res = mr.AvgOfReviewer(1);
+            double exp = 3.6;
+            Assert.Equal(res, exp);
+        }
+
+        [Fact]
+        public void AvgOfReviewerPerformanceTest()
+        {
+            IMovieRating mr = new MovieRating();
+            mr.Reviews = ReadJSON(PATH);
+            Random rnd = new Random();
+            Stopwatch sw = Stopwatch.StartNew();
+            double res = mr.AvgOfReviewer(rnd.Next(1, 999));
+            sw.Stop();
+
+            Assert.True(sw.ElapsedMilliseconds < 4000);
+        }
+        #endregion
+
         #region TopMoveTests
 
         [Fact]
