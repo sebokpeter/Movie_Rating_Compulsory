@@ -9,8 +9,7 @@ namespace MovieReviewTest
 {
     public class UnitTest1
     {
-<<<<<<< HEAD
-=======
+
         [Fact]
         public void NumberOfReviews()
         {
@@ -37,7 +36,6 @@ namespace MovieReviewTest
             return reviews;
         }
 
->>>>>>> master
         List<Review> ReadJSON(string path)
         {
             List<Review> reviews = new List<Review>();
@@ -48,13 +46,20 @@ namespace MovieReviewTest
                 string json = sr.ReadToEnd();
                 reviews = JsonConvert.DeserializeObject<List<Review>>(json);
             }
-<<<<<<< HEAD
-            
-=======
 
->>>>>>> master
             return reviews;
         }
-        
+
+        #region TopMoveTests
+
+        [Fact]
+        public void TopMovieTest()
+        {
+            IMovieRating rating = new MovieRating();
+            List<Review> reviews = ReadJSONTop10("..\ratings.json");
+        }
+
+        #endregion
+
     }
 }
