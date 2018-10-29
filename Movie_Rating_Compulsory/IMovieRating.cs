@@ -6,6 +6,8 @@ namespace Movie_Rating_Compulsory
 {
     public interface IMovieRating
     {
+        List<Review> Reviews { get; set; }
+
         /// <summary>
         /// Returns the number of reviews made by the reviewer.
         /// </summary>
