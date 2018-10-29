@@ -28,14 +28,13 @@ namespace Movie_Rating_Compulsory
             int sumOfGrades = 0;
             int numOfReviewer = 0;
 
-            var movieID = Reviews.FirstOrDefault(review => mID == review.Movie);
-            
-            for(int i = 0; i <Reviews.Count(); i++)
-            {
-               sumOfGrades += movieID.Grade;
-               numOfReviewer++;
-            }
+            var movieList = Reviews.Where(review => mID == review.Movie);
 
+            foreach (var movie in movieList)
+            {
+                sumOfGrades += movie.Grade;
+                numOfReviewer++;
+            }
             double avarageRate = sumOfGrades / numOfReviewer;
             return avarageRate;
                
