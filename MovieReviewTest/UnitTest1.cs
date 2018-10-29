@@ -4,21 +4,33 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.IO;
 using Xunit;
+using System.Diagnostics;
 
 namespace MovieReviewTest
 {
     public class UnitTest1
     {
+
         [Fact]
         public void NumberOfReviews()
         {
             IMovieRating mr = new MovieRating();
-            List<Review> list = ReadJSONTop10("../../../../ratings.json");
-
-            mr.Reviews = list;
+            mr.Reviews = ReadJSONTop10("../../../../ratings.json");
             int res = mr.NumberOfReviews(1);
             int exp = 10;
             Assert.Equal(res, exp);
+        }
+
+        [Fact]
+        public void NumberOfReviewsPerformance()
+        {
+            IMovieRating mr = new MovieRating();
+            mr.Reviews = ReadJSON("../../../../ratings.json");
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            mr.NumberOfReviews(1);
+            sw.Stop();
+            Assert.True(sw.ElapsedMilliseconds < 4000);
         }
 
         List<Review> ReadJSONTop10(string path)
@@ -37,7 +49,7 @@ namespace MovieReviewTest
             return reviews;
         }
 
-        List<Review> ReadJSON(string path)
+        static List<Review> ReadJSON(string path)
         {
             List<Review> reviews = new List<Review>();
 
@@ -50,6 +62,6 @@ namespace MovieReviewTest
 
             return reviews;
         }
-        
+
     }
 }

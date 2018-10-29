@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Movie_Rating_Compulsory
 {
@@ -44,7 +45,8 @@ namespace Movie_Rating_Compulsory
 
         public int NumberOfReviews(int rID)
         {
-            throw new NotImplementedException();
+            int count = Reviews.Where(x => x.Reviewer == rID).Count();
+            return count;
         }
 
         public List<int> RevieverMovies(int rID)
