@@ -35,14 +35,23 @@ namespace Movie_Rating_Compulsory
                 sumOfGrades += movie.Grade;
                 numOfReviewer++;
             }
-            double avarageRate = sumOfGrades / numOfReviewer;
-            return avarageRate;
+            double averageRate = sumOfGrades / numOfReviewer;
+            return averageRate;
                
         }
 
         public int MovieReviewByGrade(int mID, int grade)
         {
-            throw new NotImplementedException();
+            var gradeCounter = 0;
+
+            var movieList = Reviews.Where(review => mID == review.Movie && review.Grade == grade);
+            
+            foreach (var movieByGrade in movieList)
+            {
+                gradeCounter++;
+            }
+
+            return gradeCounter;
         }
 
         public int MovieReviewCount(int mID)
