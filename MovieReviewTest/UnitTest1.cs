@@ -13,7 +13,7 @@ namespace MovieReviewTest
         public void NumberOfReviews()
         {
             IMovieRating mr = new MovieRating();
-            List<Review> list = ReadJSON("rating.json");
+            List<Review> list = ReadJSONTop10("../../../../ratings.json");
 
             mr.Reviews = list;
             int res = mr.NumberOfReviews(1);
@@ -26,8 +26,10 @@ namespace MovieReviewTest
             List<Review> reviews = new List<Review>();
 
             using (StreamReader sr = new StreamReader(path)) {
+                sr.ReadLine();
                 for (int i = 0; i < 10; i++) {
                     string json = sr.ReadLine();
+                    json = json.Substring(0, json.Length-2);
                     reviews.Add(JsonConvert.DeserializeObject<Review>(json));
                 }
             }
