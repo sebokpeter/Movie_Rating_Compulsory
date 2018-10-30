@@ -109,5 +109,42 @@ namespace MovieReviewTest
 
         #endregion
 
+        #region MovieReviewers
+
+        [Fact]
+        public void MovieReviewersTest()
+        {
+            IMovieRating rating = new MovieRating();
+            List<Review> reviews = ReadJSONTop10(PATH);
+
+            List<int> expected = new List<int> { 1 }; // The first ten movies are all reviewed by reviewer #1.
+            rating.Reviews = reviews;
+
+            Assert.Equal(expected, rating.MovieReviewers(1488844));
+            Assert.Equal(expected, rating.MovieReviewers(822109));
+            Assert.Equal(expected, rating.MovieReviewers(885013));
+        }
+
+        [Fact]
+        public void MovieReviewersPerfTest()
+        {
+            IMovieRating rating = new MovieRating();
+
+            List<Review> reviews = ReadJSON(PATH);
+            rating.Reviews = reviews;
+
+            Stopwatch sw;
+            Random r = new Random();
+            for (int i = 0; i < 200; i++)
+            {
+                int id = r.Next(333, 2378530); // Get a random ID (because numbers in the file do not start from 1)
+                sw = Stopwatch.StartNew();
+                rating.MovieReviewers(id);
+                sw.Stop();
+                Assert.True(sw.ElapsedMilliseconds <= 4000);
+            }
+        }
+
+        #endregion
     }
 }
