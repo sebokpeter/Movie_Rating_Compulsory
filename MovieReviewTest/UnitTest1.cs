@@ -98,10 +98,29 @@ namespace MovieReviewTest
 
         }
 
-        
-
+        /// <summary>
+        /// Test for finding the most top rated(5) movies with top 10, and expecting back a list
+        /// </summary>
         [Fact]
-        public void MovieMostTopRated()
+        public void MovieMostTopRatedWithTop10()
+        {
+            IMovieRating mr = new MovieRating();
+            List<Review> list = ReadJSONTop10("../../../../ratings.json");
+
+            mr.Reviews = list;
+
+            var res = mr.MovieMostTopRate();
+            List<int> exp = new List<int>() {822109};
+
+            Assert.Equal(res, exp);
+
+        }
+
+        /// <summary>
+        /// Test for findig the mos top rated(5) movies with top 10, and expecting back a number which is the number of movies added to the list
+        /// </summary>
+        [Fact]
+        public void MovieMostTopRatedWithTop10Count()
         {
             IMovieRating mr = new MovieRating();
             List<Review> list = ReadJSONTop10("../../../../ratings.json");
@@ -114,6 +133,29 @@ namespace MovieReviewTest
             Assert.Equal(res, exp);
 
         }
+        /// <summary>
+        /// Test for findig the mos top rated(5) movies with all data, check if it can be compiled at maximum 4 sec
+        /// </summary>
+        [Fact]
+        public void MovieMostTopRatedPerformanceTest()
+        {
+            IMovieRating mr = new MovieRating();
+            List<Review> list = ReadJSONTop10("../../../../ratings.json");
+
+            mr.Reviews = list;
+
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
+            var res = mr.MovieMostTopRate();
+           
+            sw.Stop();
+
+            Assert.True(sw.ElapsedMilliseconds < 4000);
+
+        }
+
+
 
         List<Review> ReadJSONTop10(string path)
         {
@@ -121,7 +163,7 @@ namespace MovieReviewTest
 
             using (StreamReader sr = new StreamReader(path)) {
                 sr.ReadLine();
-                for (int i = 0; i < 100; i++) {
+                for (int i = 0; i < 10; i++) {
                     string json = sr.ReadLine();
                     json = json.Substring(0, json.Length-2);
                     reviews.Add(JsonConvert.DeserializeObject<Review>(json));

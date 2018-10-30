@@ -19,12 +19,18 @@ namespace Movie_Rating_Compulsory
             throw new NotImplementedException();
         }
 
-        public List<Review> MovieMostTopRate()
+        public List<int> MovieMostTopRate()
         {
-            var topRatedMovies = Reviews.OrderBy(r => r.Grade ==5 ).ToList();
-            foreach (var movie in topRatedMovies)
+            List<int> topRatedMovies  = new List<int>();
+
+            var topRatedMoviesGrade = Reviews.Where(r => r.Grade == 5);
+
+            foreach (var movie in topRatedMoviesGrade)
             {
-                Debug.WriteLine(movie.Movie);
+                if(!topRatedMovies.Contains(movie.Movie))
+                {
+                    topRatedMovies.Add(movie.Movie);
+                }
             }
             return topRatedMovies;
         }

@@ -56,7 +56,7 @@ namespace Movie_Rating_Compulsory
         /// Returns a list of movies with the highest number of top ratings.
         /// </summary>
         /// <returns>The list of movies with the highest ratings.</returns>
-        List<Review> MovieMostTopRate();
+        List<int> MovieMostTopRate();
 
         /// <summary>
         /// Returns the reviewer(s) with the most reviews.
