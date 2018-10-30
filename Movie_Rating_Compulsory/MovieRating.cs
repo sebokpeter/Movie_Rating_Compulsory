@@ -88,7 +88,10 @@ namespace Movie_Rating_Compulsory
 
         public List<int> ReviewerTopCount()
         {
-            throw new NotImplementedException();
+            List<int> ReviewerWithMostReviews = new List<int>();
+            int count = Reviews.OrderByDescending(r => r.Reviewer).Count();
+            for
+            
         }
 
         public List<int> TopMovies(int num)

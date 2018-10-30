@@ -155,6 +155,19 @@ namespace MovieReviewTest
 
         }
 
+        [Fact]
+        public void ReviewerTopCountWithTop10()
+        {
+            IMovieRating mr = new MovieRating();
+            List<Review> list = ReadJSONTop10("../../../../ratings.json");
+
+            mr.Reviews = list;
+
+            double res = mr.ReviewerTopCount().Count;
+            var exp = 1;
+            Assert.Equal(res, exp);
+
+        }
 
 
         List<Review> ReadJSONTop10(string path)
