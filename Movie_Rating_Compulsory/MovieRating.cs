@@ -41,11 +41,6 @@ namespace Movie_Rating_Compulsory
             return count;
         }
 
-        public List<int> MovieReviewers(int mID)
-        {
-            throw new NotImplementedException();
-        }
-
         public int NumberOfReviews(int rID)
         {
             int count = Reviews.Where(x => x.Reviewer == rID).Count();
@@ -69,6 +64,14 @@ namespace Movie_Rating_Compulsory
         public List<int> TopMovies(int num)
         {
             throw new NotImplementedException();
+        }
+
+        public List<int> MovieReviewers(int mID)
+        {
+            List<int> reviewers = Reviews.Where(r => r.Movie == mID)
+                .OrderByDescending(m => m.Grade).ThenByDescending(m => m.Date)
+                .Select(m => m.Reviewer).ToList();
+            return reviewers;
         }
     }
 }
