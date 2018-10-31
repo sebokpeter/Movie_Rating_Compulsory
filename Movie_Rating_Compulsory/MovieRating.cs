@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -88,10 +89,24 @@ namespace Movie_Rating_Compulsory
 
         public List<int> ReviewerTopCount()
         {
-            List<int> ReviewerWithMostReviews = new List<int>();
-            int count = Reviews.OrderByDescending(r => r.Reviewer).Count();
-            for
-            
+            var reviewerCounted = Reviews.GroupBy(r => r.Reviewer).Select(g => g.Count()).ToList();
+            List<int> list = new List<int>();
+            int max = -1;
+            for (int i = 0; i < reviewerCounted.Count(); i++)
+            {
+                if (reviewerCounted[i] == max)
+                {
+                    list.Add(i + 1);
+                }
+
+                if (reviewerCounted[i] > max)
+                {
+                    list.Clear();
+                    max = reviewerCounted[i];
+                    list.Add(i + 1);
+                }
+            }
+            return list;
         }
 
         public List<int> TopMovies(int num)

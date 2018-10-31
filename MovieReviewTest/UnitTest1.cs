@@ -33,7 +33,7 @@ namespace MovieReviewTest
         public void AvarageRatingPerformanceTest()
         {
             IMovieRating mr = new MovieRating();
-            mr.Reviews = ReadJSONTop10("../../../../ratings.json");
+            mr.Reviews = ReadJSON("../../../../ratings.json");
 
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -140,7 +140,7 @@ namespace MovieReviewTest
         public void MovieMostTopRatedPerformanceTest()
         {
             IMovieRating mr = new MovieRating();
-            List<Review> list = ReadJSONTop10("../../../../ratings.json");
+            List<Review> list = ReadJSON("../../../../ratings.json");
 
             mr.Reviews = list;
 
@@ -159,13 +159,29 @@ namespace MovieReviewTest
         public void ReviewerTopCountWithTop10()
         {
             IMovieRating mr = new MovieRating();
-            List<Review> list = ReadJSONTop10("../../../../ratings.json");
+            List<Review> list = ReadJSON("../../../../ratings.json");
 
             mr.Reviews = list;
 
-            double res = mr.ReviewerTopCount().Count;
-            var exp = 1;
+            List<int> res = mr.ReviewerTopCount();
+            List<int> exp = new List<int> { 571 };
             Assert.Equal(res, exp);
+        }
+
+        [Fact]
+        public void ReviewerTopCountPerformanceTest()
+        {
+            IMovieRating mr = new MovieRating();
+            List<Review> list = ReadJSON("../../../../ratings.json");
+
+            mr.Reviews = list;
+
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
+            mr.ReviewerTopCount();
+            sw.Stop();
+            Assert.True(sw.ElapsedMilliseconds < 4000);
 
         }
 
