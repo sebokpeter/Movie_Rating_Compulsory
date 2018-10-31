@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.IO;
 using Xunit;
-using System.Diagnostics;
 using System.Linq;
+using System.Diagnostics;
 
 namespace MovieReviewTest
 {
@@ -14,17 +14,61 @@ namespace MovieReviewTest
 
         private const string PATH = "../../../../ratings.json";
 
-        #region AvarageRating
+        private readonly HashSet<Review> firstTen = new HashSet<Review>();
+        private readonly HashSet<Review> allReviews = new HashSet<Review>();
+
+        public UnitTest1()
+        {
+            firstTen = ReadJSONTop10(PATH).ToHashSet();
+            allReviews = ReadJSON(PATH).ToHashSet();
+        }
+
+        #region ReadFile
+        List<Review> ReadJSONTop10(string path)
+        {
+            List<Review> reviews = new List<Review>();
+
+            using (StreamReader sr = new StreamReader(path))
+            {
+                sr.ReadLine();
+                for (int i = 0; i < 10; i++)
+                {
+                    string json = sr.ReadLine();
+                    json = json.Substring(0, json.Length - 2);
+                    reviews.Add(JsonConvert.DeserializeObject<Review>(json));
+                }
+            }
+
+            return reviews;
+        }
+
+        List<Review> ReadJSON(string path)
+        {
+            List<Review> reviews = new List<Review>();
+
+            using (StreamReader sr = new StreamReader(path))
+            {
+                // TODO: Optional task: do not read everything at once.
+                string json = sr.ReadToEnd();
+                reviews = JsonConvert.DeserializeObject<List<Review>>(json);
+            }
+
+            return reviews;
+        }
+
+
         /// <summary>
         /// Test with top 10 data to check how the method works. 
         /// </summary>
         [Fact]
         public void AvarageRatingTestWithTop10()
         {
-            IMovieRating mr = new MovieRating();
-            List<Review> list = ReadJSONTop10(PATH);
+            IMovieRating mr = new MovieRating
+            {
+                // List<Review> list = ReadJSONTop10(PATH);
 
-            mr.Reviews = list;
+                Reviews = firstTen
+            };
 
             double  res = mr.MovieReviewAvg(1488844);
             var exp = 3;
@@ -37,8 +81,11 @@ namespace MovieReviewTest
         [Fact]
         public void AvarageRatingPerformanceTest()
         {
-            IMovieRating mr = new MovieRating();
-            mr.Reviews = ReadJSON(PATH);
+
+            IMovieRating mr = new MovieRating
+            {
+                Reviews = firstTen
+            };
 
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -57,10 +104,10 @@ namespace MovieReviewTest
         [Fact]
         public void MovieReviewbyGradeCounterWithTop10()
         {
-            IMovieRating mr = new MovieRating();
-            List<Review> list = ReadJSONTop10(PATH);
-
-            mr.Reviews = list;
+            IMovieRating mr = new MovieRating
+            {
+                Reviews = firstTen
+            };
 
             double res = mr.MovieReviewByGrade(1488844, 3);
             var exp = 1;
@@ -74,10 +121,10 @@ namespace MovieReviewTest
         [Fact]
         public void MovieReviewbyGradeCounterWithAllData()
         {
-            IMovieRating mr = new MovieRating();
-            List<Review> list = ReadJSON(PATH);
-
-            mr.Reviews = list;
+            IMovieRating mr = new MovieRating
+            {
+                Reviews = allReviews
+            };
 
             double res = mr.MovieReviewByGrade(1488844,3);
             var exp = 66;
@@ -91,10 +138,12 @@ namespace MovieReviewTest
         [Fact]
         public void MovieReviewbyGradeCounterPerformanceTest()
         {
-            IMovieRating mr = new MovieRating();
-            List<Review> list = ReadJSON(PATH);
+            IMovieRating mr = new MovieRating
+            {
+                //List<Review> list = ReadJSON(PATH);
 
-            mr.Reviews = list;
+                Reviews = allReviews
+            };
 
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -113,10 +162,12 @@ namespace MovieReviewTest
         [Fact]
         public void MovieMostTopRatedWithTop10()
         {
-            IMovieRating mr = new MovieRating();
-            List<Review> list = ReadJSONTop10(PATH);
+            IMovieRating mr = new MovieRating
+            {
+                //List<Review> list = ReadJSONTop10(PATH);
 
-            mr.Reviews = list;
+                Reviews = firstTen
+            };
 
             var res = mr.MovieMostTopRate();
             List<int> exp = new List<int>() {822109};
@@ -131,10 +182,12 @@ namespace MovieReviewTest
         [Fact]
         public void MovieMostTopRatedWithTop10Count()
         {
-            IMovieRating mr = new MovieRating();
-            List<Review> list = ReadJSONTop10(PATH);
+            IMovieRating mr = new MovieRating
+            {
+                //List<Review> list = ReadJSONTop10(PATH);
 
-            mr.Reviews = list;
+                Reviews = firstTen
+            };
 
             var res = mr.MovieMostTopRate().Count;
             var exp = 1;
@@ -148,10 +201,12 @@ namespace MovieReviewTest
         [Fact]
         public void MovieMostTopRatedPerformanceTest()
         {
-            IMovieRating mr = new MovieRating();
-            List<Review> list = ReadJSON(PATH);
+            IMovieRating mr = new MovieRating
+            {
+                // List<Review> list = ReadJSON(PATH);
 
-            mr.Reviews = list;
+                Reviews = firstTen
+            };
 
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -169,10 +224,10 @@ namespace MovieReviewTest
         [Fact]
         public void ReviewerTopCountWithTop10()
         {
-            IMovieRating mr = new MovieRating();
-            List<Review> list = ReadJSON(PATH);
-
-            mr.Reviews = list;
+            IMovieRating mr = new MovieRating
+            {
+                Reviews = allReviews
+            };
 
             List<int> res = mr.ReviewerTopCount();
             List<int> exp = new List<int> { 571 };
@@ -182,10 +237,10 @@ namespace MovieReviewTest
         [Fact]
         public void ReviewerTopCountPerformanceTest()
         {
-            IMovieRating mr = new MovieRating();
-            List<Review> list = ReadJSON(PATH);
-
-            mr.Reviews = list;
+            IMovieRating mr = new MovieRating
+            {
+                Reviews = allReviews
+            };
 
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -204,7 +259,7 @@ namespace MovieReviewTest
         {
             IMovieRating mr = new MovieRating
             {
-                Reviews = ReadJSONTop10(PATH)
+                Reviews = firstTen
             };
             int res = mr.NumberOfReviews(1);
             int exp = 10;
@@ -216,7 +271,7 @@ namespace MovieReviewTest
         {
             IMovieRating mr = new MovieRating
             {
-                Reviews = ReadJSON(PATH)
+                Reviews = allReviews
             };
             Random rnd = new Random();
             Stopwatch sw = Stopwatch.StartNew();
@@ -233,7 +288,7 @@ namespace MovieReviewTest
         {
             IMovieRating mr = new MovieRating
             {
-                Reviews = ReadJSONTop10(PATH)
+                Reviews = firstTen
             };
             double res = mr.AvgOfReviewer(1);
             double exp = 3.6;
@@ -245,7 +300,7 @@ namespace MovieReviewTest
         {
             IMovieRating mr = new MovieRating
             {
-                Reviews = ReadJSON(PATH)
+                Reviews = allReviews
             };
             Random rnd = new Random();
             Stopwatch sw = Stopwatch.StartNew();
@@ -263,7 +318,7 @@ namespace MovieReviewTest
         {
             IMovieRating mr = new MovieRating
             {
-                Reviews = ReadJSONTop10(PATH)
+                Reviews = firstTen
             };
             int res = mr.GradeCountByID(1, 4);
             int exp = 4;
@@ -276,7 +331,7 @@ namespace MovieReviewTest
         {
             IMovieRating mr = new MovieRating
             {
-                Reviews = ReadJSON(PATH)
+                Reviews = allReviews
             };
             Random rnd = new Random();
             Stopwatch sw = Stopwatch.StartNew();
@@ -294,7 +349,7 @@ namespace MovieReviewTest
         {
             IMovieRating mr = new MovieRating
             {
-                Reviews = ReadJSONTop10(PATH)
+                Reviews = firstTen
             };
             int res = mr.MovieReviewerCount(1488844);
             int exp = 1;
@@ -307,7 +362,7 @@ namespace MovieReviewTest
         {
             IMovieRating mr = new MovieRating
             {
-                Reviews = ReadJSON(PATH)
+                Reviews = allReviews
             };
             Random rnd = new Random();
             Stopwatch sw = Stopwatch.StartNew();
@@ -316,20 +371,46 @@ namespace MovieReviewTest
 
             Assert.True(sw.ElapsedMilliseconds < 4000);
         }
-        #endregion
-
-        #region TopMoveTests
+        #region TopMovieTests
 
         [Fact]
         public void TopMovieTest()
         {
-            IMovieRating rating = new MovieRating();
-            List<Review> reviews = ReadJSONTop10(PATH);
+        IMovieRating rating = new MovieRating
+        {
+            // List<Review> reviews = ReadJSONTop10(PATH);
+            Reviews = firstTen
+        };
 
-            rating.Reviews = reviews;
+        int grade = 5;
+            foreach (int item in rating.TopMovies(10))
+            {
+                Review review = firstTen.FirstOrDefault(r => r.Movie == item);
+                Assert.True(grade >= review.Grade); // Ensure that the ratings are in the correct order
+                grade = review.Grade;
+            }
+        }
+        #endregion
 
-            rating.TopMovies(10);
-            
+        [Fact]
+        public void TopMoviePerfTest()
+        {
+            IMovieRating rating = new MovieRating
+            {
+                //List<Review> reviews = ReadJSON(PATH);
+
+                Reviews = allReviews
+            };
+
+            Stopwatch sw;
+
+            for (int i = 0; i < 1; i++)
+            {
+                sw = Stopwatch.StartNew();
+                rating.TopMovies(10);
+                sw.Stop();
+                Assert.True(sw.ElapsedMilliseconds <= 4000);
+            }
         }
 
         #endregion
@@ -340,12 +421,12 @@ namespace MovieReviewTest
         public void ReviewerMoviesTest()
         {
             IMovieRating rating = new MovieRating();
-            List<Review> reviews = ReadJSONTop10(PATH);
+           // List<Review> reviews = ReadJSONTop10(PATH);
 
             // The first ten movies are all reviewed by reviewer #1.
-            List<int> expected = reviews.OrderByDescending(m => m.Grade).ThenByDescending(m => m.Date).Select(m => m.Movie).ToList();
- 
-            rating.Reviews = reviews;
+            List<int> expected = firstTen.OrderByDescending(m => m.Grade).ThenByDescending(m => m.Date).Select(m => m.Movie).ToList();
+
+            rating.Reviews = firstTen;
 
             Assert.Equal(expected, rating.RevieverMovies(1));
         }
@@ -353,12 +434,14 @@ namespace MovieReviewTest
         [Fact]
         public void ReviewerMoviePerfTest()
         {
-            IMovieRating rating = new MovieRating();
+        IMovieRating rating = new MovieRating
+        {
 
-            List<Review> reviews = ReadJSON(PATH);
-            rating.Reviews = reviews;
+            //List<Review> reviews = ReadJSON(PATH);
+            Reviews = allReviews
+        };
 
-            Stopwatch sw;
+        Stopwatch sw;
 
             for (int i = 0; i < 100; i++)
             {
@@ -377,10 +460,10 @@ namespace MovieReviewTest
         public void MovieReviewersTest()
         {
             IMovieRating rating = new MovieRating();
-            List<Review> reviews = ReadJSONTop10(PATH);
+            //List<Review> reviews = ReadJSONTop10(PATH);
 
             List<int> expected = new List<int> { 1 }; // The first ten movies are all reviewed by reviewer #1.
-            rating.Reviews = reviews;
+            rating.Reviews = firstTen;
 
             Assert.Equal(expected, rating.MovieReviewers(1488844));
             Assert.Equal(expected, rating.MovieReviewers(822109));
@@ -390,57 +473,24 @@ namespace MovieReviewTest
         [Fact]
         public void MovieReviewersPerfTest()
         {
-            IMovieRating rating = new MovieRating();
+            IMovieRating rating = new MovieRating
+            {
+                //List<Review> reviews = ReadJSON(PATH);
+                Reviews = allReviews
+            };
 
-            List<Review> reviews = ReadJSON(PATH);
-            rating.Reviews = reviews;
+            int[] ids = allReviews.Select(r => r.Movie).Take(200).ToArray(); // Select a bunch of movie ids
 
             Stopwatch sw;
-            Random r = new Random();
             for (int i = 0; i < 200; i++)
             {
-                int id = r.Next(333, 2378530); // Get a random ID (because numbers in the file do not start from 1)
                 sw = Stopwatch.StartNew();
-                rating.MovieReviewers(id);
+                rating.MovieReviewers(ids[i]);
                 sw.Stop();
                 Assert.True(sw.ElapsedMilliseconds <= 4000);
             }
         }
 
-        #endregion
-
-        #region LoadingFile
-        static List<Review> ReadJSON(string path)
-        {
-            List<Review> reviews = new List<Review>();
-
-            using (StreamReader sr = new StreamReader(path))
-            {
-                // TODO: Optional task: do not read everything at once.
-                string json = sr.ReadToEnd();
-                reviews = JsonConvert.DeserializeObject<List<Review>>(json);
-            }
-
-            return reviews;
-        }
-
-        List<Review> ReadJSONTop10(string path)
-        {
-            List<Review> reviews = new List<Review>();
-
-            using (StreamReader sr = new StreamReader(path))
-            {
-                sr.ReadLine();
-                for (int i = 0; i < 10; i++)
-                {
-                    string json = sr.ReadLine();
-                    json = json.Substring(0, json.Length - 2);
-                    reviews.Add(JsonConvert.DeserializeObject<Review>(json));
-                }
-            }
-
-            return reviews;
-        }
         #endregion
 
     }

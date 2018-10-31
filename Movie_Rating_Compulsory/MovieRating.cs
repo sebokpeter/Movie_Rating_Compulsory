@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Movie_Rating_Compulsory
 {
     public class MovieRating : IMovieRating
     {
-        public List<Review> Reviews { get; set; }
+        //public List<Review> Reviews { get; set; }
+
+        public HashSet<Review> Reviews { get; set; }
 
         public double AvgOfReviewer(int rID)
         {
@@ -89,7 +88,10 @@ namespace Movie_Rating_Compulsory
 
         public List<int> TopMovies(int num)
         {
-            throw new NotImplementedException();
+            var res = Reviews.GroupBy(r => r.Movie).Select(result => new { mov = result.Key, avg = result.Average(m => m.Grade) });
+
+            var ordered = res.OrderByDescending(m => m.avg).Take(num).Select(m => m.mov).ToList();
+            return ordered;
         }
 
         public List<int> MovieReviewers(int mID)
