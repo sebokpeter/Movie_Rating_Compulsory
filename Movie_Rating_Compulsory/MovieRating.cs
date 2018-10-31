@@ -12,12 +12,14 @@ namespace Movie_Rating_Compulsory
 
         public double AvgOfReviewer(int rID)
         {
-            throw new NotImplementedException();
+            double avg = Reviews.Where(x => x.Reviewer == rID).Average(x => x.Grade);
+            return avg;
         }
 
         public int GradeCountByID(int rID, int grade)
         {
-            throw new NotImplementedException();
+            int count = Reviews.Where(x => x.Reviewer == rID && x.Grade == grade).Count();
+            return count;
         }
 
         public List<int> MovieMostTopRate()
@@ -44,22 +46,23 @@ namespace Movie_Rating_Compulsory
 
         public int MovieReviewerCount(int mID)
         {
-            throw new NotImplementedException();
-        }
-
-        public List<int> MovieReviewers(int mID)
-        {
-            throw new NotImplementedException();
+            int count = Reviews.Where(x => x.Movie == mID).Count();
+            return count;
         }
 
         public int NumberOfReviews(int rID)
         {
-            throw new NotImplementedException();
+            int count = Reviews.Where(x => x.Reviewer == rID).Count();
+            return count;
         }
 
         public List<int> RevieverMovies(int rID)
         {
-            throw new NotImplementedException();
+            List<int> reviewerMovies = Reviews.Where(m => m.Reviewer == rID)
+                .OrderByDescending(m => m.Grade).ThenByDescending(m => m.Date)
+                .Select(m => m.Movie).ToList();
+
+            return reviewerMovies;
         }
 
         public List<int> ReviewerTopCount()
@@ -87,6 +90,14 @@ namespace Movie_Rating_Compulsory
         public List<int> TopMovies(int num)
         {
             throw new NotImplementedException();
+        }
+
+        public List<int> MovieReviewers(int mID)
+        {
+            List<int> reviewers = Reviews.Where(r => r.Movie == mID)
+                .OrderByDescending(m => m.Grade).ThenByDescending(m => m.Date)
+                .Select(m => m.Reviewer).ToList();
+            return reviewers;
         }
     }
 }

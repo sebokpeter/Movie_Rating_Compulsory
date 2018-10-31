@@ -16,7 +16,7 @@ namespace Movie_Rating_Compulsory
         int NumberOfReviews(int rID);
 
         /// <summary>
-        /// Returns the average grate that the reviewer had given.
+        /// Returns the average grade that the reviewer had given.
         /// </summary>
         /// <param name="rID">Reviewer ID</param>
         /// <returns>The average grade given by the reviewer with rID.</returns>
