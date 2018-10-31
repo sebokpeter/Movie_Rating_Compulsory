@@ -22,52 +22,27 @@ namespace Movie_Rating_Compulsory
 
         public List<int> MovieMostTopRate()
         {
-            List<int> topRatedMovies  = new List<int>();
-
-            var topRatedMoviesGrade = Reviews.Where(r => r.Grade == 5);
-
-            foreach (var movie in topRatedMoviesGrade)
-            {
-                if(!topRatedMovies.Contains(movie.Movie))
-                {
-                    topRatedMovies.Add(movie.Movie);
-                }
-            }
-            return topRatedMovies;
+            var topRatedMoviesGrade = Reviews.Where(r => r.Grade == 5).Select(r => r.Movie).ToList();
+            
+            return topRatedMoviesGrade;
         }
 
         public double MovieReviewAvg(int mID)
         {
-            int sumOfGrades = 0;
-            int numOfReviewer = 0;
-
-            var movieList = Reviews.Where(review => mID == review.Movie);
-
-            foreach (var movie in movieList)
-            {
-                sumOfGrades += movie.Grade;
-                numOfReviewer++;
-            }
-            double averageRate = sumOfGrades / numOfReviewer;
+            var averageRate = Reviews.Where(review => mID == review.Movie).Average(r => r.Grade);
+            
             return averageRate;
                
         }
 
         public int MovieReviewByGrade(int mID, int grade)
         {
-            var gradeCounter = 0;
-
-            var movieList = Reviews.Where(review => mID == review.Movie && review.Grade == grade);
+            var gradeCounter = Reviews.Where(review => mID == review.Movie && review.Grade == grade).Count();
             
-            foreach (var movieByGrade in movieList)
-            {
-                gradeCounter++;
-            }
-
             return gradeCounter;
         }
 
-        public int MovieReviewCount(int mID)
+        public int MovieReviewerCount(int mID)
         {
             throw new NotImplementedException();
         }

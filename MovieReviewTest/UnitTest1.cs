@@ -147,7 +147,7 @@ namespace MovieReviewTest
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            var res = mr.MovieMostTopRate();
+            mr.MovieMostTopRate();
            
             sw.Stop();
 

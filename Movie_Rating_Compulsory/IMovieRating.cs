@@ -35,7 +35,7 @@ namespace Movie_Rating_Compulsory
         /// </summary>
         /// <param name="mID">Movie ID</param>
         /// <returns>The number of reviewers that reviewed the movie with the id of mID.</returns>
-        int MovieReviewCount(int mID);
+        int MovieReviewerCount(int mID);
 
         /// <summary>
         /// Returns the average of ratings a movie had received.
