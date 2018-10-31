@@ -88,7 +88,7 @@ namespace Movie_Rating_Compulsory
 
         public List<int> TopMovies(int num)
         {
-            var res = Reviews.GroupBy(r => r.Movie).Select(result => new { mov = result.Key, avg = result.Average(m => m.Grade) });
+            var res = Reviews.AsParallel().GroupBy(r => r.Movie).Select(result => new { mov = result.Key, avg = result.Average(m => m.Grade) });
 
             var ordered = res.OrderByDescending(m => m.avg).Take(num).Select(m => m.mov).ToList();
             return ordered;
