@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Movie_Rating_Compulsory
@@ -22,17 +24,49 @@ namespace Movie_Rating_Compulsory
 
         public List<int> MovieMostTopRate()
         {
-            throw new NotImplementedException();
+            List<int> topRatedMovies  = new List<int>();
+
+            var topRatedMoviesGrade = Reviews.Where(r => r.Grade == 5);
+
+            foreach (var review in topRatedMoviesGrade)
+            {
+                if(!topRatedMovies.Contains(review.Movie))
+                {
+                    topRatedMovies.Add(review.Movie);
+                }
+            }
+            return topRatedMovies;
         }
 
         public double MovieReviewAvg(int mID)
         {
-            throw new NotImplementedException();
+            int sumOfGrades = 0;
+            int numOfReviewer = 0;
+
+            var movieList = Reviews.Where(review => mID == review.Movie);
+
+            foreach (var movie in movieList)
+            {
+                sumOfGrades += movie.Grade;
+                numOfReviewer++;
+            }
+            double averageRate = sumOfGrades / numOfReviewer;
+            return averageRate;
+               
         }
 
         public int MovieReviewByGrade(int mID, int grade)
         {
-            throw new NotImplementedException();
+            var gradeCounter = 0;
+
+            var movieList = Reviews.Where(review => mID == review.Movie && review.Grade == grade);
+            
+            foreach (var movieByGrade in movieList)
+            {
+                gradeCounter++;
+            }
+
+            return gradeCounter;
         }
 
         public int MovieReviewerCount(int mID)
@@ -58,7 +92,24 @@ namespace Movie_Rating_Compulsory
 
         public List<int> ReviewerTopCount()
         {
-            throw new NotImplementedException();
+            var reviewerCounted = Reviews.GroupBy(r => r.Reviewer).Select(g => g.Count()).ToList();
+            List<int> list = new List<int>();
+            int max = -1;
+            for (int i = 0; i < reviewerCounted.Count(); i++)
+            {
+                if (reviewerCounted[i] == max)
+                {
+                    list.Add(i + 1);
+                }
+
+                if (reviewerCounted[i] > max)
+                {
+                    list.Clear();
+                    max = reviewerCounted[i];
+                    list.Add(i + 1);
+                }
+            }
+            return list;
         }
 
         public List<int> TopMovies(int num)
