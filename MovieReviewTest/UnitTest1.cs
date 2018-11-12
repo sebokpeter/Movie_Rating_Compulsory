@@ -127,7 +127,7 @@ namespace MovieReviewTest
             };
 
             double res = mr.MovieReviewByGrade(1488844,3);
-            var exp = 19;
+            var exp = 66;
             Assert.Equal(res, exp);
 
         }
