@@ -5,6 +5,7 @@ dotnet: 2.1
 install:
 - dotnet restore
 
+
 script:
  - dotnet build
  - dotnet test MovieReviewTest/MovieReviewTest.csproj
