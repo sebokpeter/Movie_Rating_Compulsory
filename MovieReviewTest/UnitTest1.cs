@@ -11,7 +11,6 @@ namespace MovieReviewTest
 {
     public class UnitTest1
     {
-
         private const string PATH = "../../../../ratings.json";
 
         private readonly HashSet<Review> firstTen = new HashSet<Review>();
